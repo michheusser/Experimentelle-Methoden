@@ -1,0 +1,17 @@
+Summary of the experiment:  
+Date : 06-Dec-2012 
+Group Name : 13 
+ 
+##########  Material Properties  ########## 
+Water thermal conductivity : 0.58 W/m/K 
+Aluminium - thermal conductivity : 238 W/m/K 
+Aluminium - density : 2700 kg/m3 
+Aluminium - specific heat : 0.88 J/kg/K 
+ 
+########## Operating Conditions  ########## 
+Initial temperature : 51 degC 
+Fluid temperature : 10 degC 
+ 
+##########     Reference Data    ########## 
+Hydraulic Diameter : 0.02 m 
+Reference Nusselt Number - smooth case : 178.9 [] 

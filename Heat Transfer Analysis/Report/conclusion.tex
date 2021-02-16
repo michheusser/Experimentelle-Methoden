@@ -1,0 +1,30 @@
+%!TEX root = Report.tex
+\chapter{Conclusion}\label{sec:conclusion}
+
+%\section{Recognized Shortcomings}
+%\begin{itemize}
+%\item very poor experiment
+%\item long hoses (water mixes before test section)
+%\item asynchrony (camera vs. pulse)
+%\item Pr and Nu not matching
+%\item TLC only small range
+%\item false initial conditions (MATLAB)
+%\item temperature of inlet water???
+%\end{itemize}
+
+
+
+Several facts limit the precision of the determination of the heat transfer coefficient $\alpha$. First, the calibration is made in a quasi-static way. But the experiment is transient and in this short time scales the Liquid Crystals might not show the same behavior as in the quasi-static case. Another significant error is the timing of the opening of the valves and the start of the MATLAB code that acquires the data. Additional time offset is implied by long hoses. When we performed the experiment, something went wrong in the timing and the measured data was useless.\\
+
+The simplified experimental setup makes it impossible to match all Dimensionless Parameters. Although Reynolds Number is in the same order  of magnitude, Prandtl and Nusselt Number didn't match at all. In addition, the function that calculates numerically a value of alpha has a very large searching interval which might reduce precision. It is as well questionable if we really have a semi-infinite configuration. The temperature on the back changes in the course of our measurement. A heating or a insulation would probably reduce the drop of the backside temperature.\\
+
+The TLC used in this experiment don't have a very large temperature range. In our experiment there was also clearly an asynchrony between the water pulse and the camera. Both factors combined led to very poor results.
+
+
+\section{Potential Improvements}
+
+To become better results there are some factors that could be improved. First of all, the liquid crystal membrane could be replaced by one with a better temperature range. On the other hand a little trigger connected to the computer could be used to synchronize the temperature-change pulse so that the camera takes the shots at the right time, as soon as the valve is open.
+
+\section{Outlook And General Conclusion}
+
+Unfortunately, the results of this experiment were rather disappointing, although we were able to get a good insight of how this kind of measurements for the industry could be performed. Too many practical errors played a role in this experiment, so that all our results were only to be dismissed and even the ones provided by previous "more correct" runs were not as optimal as expected.

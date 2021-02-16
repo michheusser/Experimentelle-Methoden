@@ -1,0 +1,143 @@
+%=================================================================
+% RELab LaTeX template - this template is based on the IMRT and ASL LaTeX template
+%=================================================================
+
+\documentclass[10pt,twoside,a4paper]{report}
+
+
+ \usepackage{ethReLab}   	% New styles and commands
+
+% \includeonly{}                      				% Quick formatting
+% \usepackage[draft]{graphicx}        		% Quick formatting
+
+ \usepackage{a4}                      			% Paper size
+ \usepackage[utf8]{inputenc}       			% Keybord settings
+ \usepackage{amsmath}                 			% Additional math functionality
+ \usepackage{amssymb}                 		% Additional math functionality
+ \usepackage{float}                   			% Placement of floating objects
+ \usepackage{fancyhdr}                			% Headings
+ \usepackage{rotating}
+ \usepackage{multirow}
+ \usepackage{url}
+ \usepackage{colortbl}
+ \usepackage{ifpdf}
+\usepackage[final]{pdfpages}
+\usepackage{mcode}
+\usepackage{cite}
+\usepackage[ngerman]{babel}
+
+
+ \usepackage{hyperref}
+ \usepackage{color}
+ \definecolor{black}{rgb}{0,0,0}
+ \definecolor{white}{rgb}{1,1,1}
+
+ \definecolor{darkred}{rgb}{0.5,0,0}
+ \definecolor{darkgreen}{rgb}{0,0.5,0}
+ \definecolor{darkblue}{rgb}{0,0,0.5}
+
+%\usepackage{german}                  		% German language
+%\usepackage{ae}                      			% German specials
+
+\usepackage{hyperref}						% generates colored links in pdf file
+\hypersetup{
+     		bookmarks = true,
+     		colorlinks = true,       				% false: boxed links; true: colored links
+    		linkcolor = black,          				% color of internal links
+    		citecolor = black,        				% color of links to bibliography
+    		filecolor = black,      				% color of file links
+    		urlcolor = black          				% color of external links
+}
+
+
+
+%---------------------------------------------------------------------------
+
+ \setlength{\parindent}{0em}                   		% Disable parindent
+ \rhead[\thepage]{\nouppercase{\rightmark}}    % Special headings
+ %\lhead[\nouppercase{\leftmark}]{\thepage}     	% Special headings
+\cfoot{}                                      					% Special headings
+
+%---------------------------------------------------------------------------
+
+ \title{Experimentelle Methoden für Ingenieuranwendungen}
+\subtitle{Strahlungskorrigierte Temperaturmessungen
+bei Temperaturen um 1000$^\circ$C}
+
+
+\projecttype{Laborbericht}
+% Internship Report, Bachelor-Thesis, Semester-Thesis, Master-Thesis
+
+\studentA{Maximilian Boosfeld}
+\studentB{Michel Heusser}
+\studentC{Kaspar Schlegel}
+
+\supervisionA{Philip Haueter}
+%\supervisionB{Supervisor B}
+%\supervisionC{Supervisor C}
+
+\professorA{Prof. Aldo Steinfeld}
+%\professorB{Prof. B}
+%\professorC{Prof. C}
+
+\timeperiod{November 2012}
+
+%===========================================================================
+\begin{document}
+
+%---------------------------------------------------------------------------
+% Title page
+
+ \maketitle
+ \pagestyle{plain}
+ \pagenumbering{roman}
+
+%---------------------------------------------------------------------------
+% Project Description Page
+%\includepdf[pages={1}]{ProjectDescription}
+ %\cleardoublepage
+
+%---------------------------------------------------------------------------
+% Preamble
+
+ \include{preamble}
+
+ \pagestyle{headings}                 	% Default headings
+ \pagestyle{fancy}                   		% Special headings
+ \pagenumbering{arabic}
+
+%---------------------------------------------------------------------------
+% Chapters
+
+ \include{introduction}
+ \include{experimentalsetup}
+ \include{methodofattack}
+ \include{results}
+ \include{conclusion}
+
+%---------------------------------------------------------------------------
+% Literature
+
+ %\cleardoublepage
+ \nocite{*}						% we want to include all entries from the bib file, even if they were not cited in the report
+ \bibliographystyle{plain}			% Style
+ 
+ \addcontentsline{toc}{chapter}{Bibliography}	% add bibliography to table of contents
+ 
+ \bibliography{literature/bib}		% include bibliography
+ %\cleardoublepage
+
+
+
+%---------------------------------------------------------------------------
+% Appendix
+
+ \appendix
+ \include{appendix}
+
+
+
+%---------------------------------------------------------------------------
+
+\end{document}
+%===========================================================================

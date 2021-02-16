@@ -1,0 +1,35 @@
+%!TEX root = Report.tex
+\chapter{Analysis Procedure}\label{sec:methodofattack}
+To start the post processing and run the provided MATLAB script "PIVbase" input parameters have to be chosen:
+\begin{equation}
+\begin{split}
+function [xgrid,ygrid,uvecs,vvecs,peaks,valid,cmaps] = \\
+PIV_{base} (I1,I2,mode,wxy,sxy,oxy,gxy,avgmaps)
+\end{split}
+\end{equation}\\
+where the parameter are defined as shown below:
+\begin{itemize}
+\item I1, I2: number of the pictures 
+\item mode: algorithms of sub pixel interpolation
+\item wxy: interrogation window size
+\item sxy: maximum search size in x and y
+\item oxy: window offset
+\item gxy: window shift
+\item avgmaps: composite image of correlation maps\\
+\end{itemize}
+The pictures 1 and 10 are identified as explained in the previous section and window offset as well as avgmaps are kept at default values. The maximum search size has to be as small as possible without loosing its unique pattern in order to ensure recognition in the second frame. After some trial and error a search size of 8 by 8 pixels seems to deliver good results. The interrogation size has to be at least twice the size of the search size due to the displacement of the tracers between the two frames. However by trying different interrogation window sizes it becomes obvious that it has to be much bigger in order to avoid blank  spots in the plots and is set to 48 by 48 pixels. The window shift directly corresponds to the resolution of the following plots and should at least  overlap 50 \% of the interrogation subareas. With much higher overlap no new information is obtained and time for computing will rise. Finally with the mode set to Gauss sub pixel interpolation and a window shift of 16 pixels yields in good performance.\\
+
+The experiment is run three times with different exposure times and adapted shutter speed so that the light intensity is roughly kept at constant level. \\
+\begin{figure}[H]
+\centering
+\begin{tabular}{ c | c | c }
+Run & Exposure Time & Shutter Speed\\
+  \hline                        
+  1 & 50 ms & 3.5 \\
+  2 & 35 ms & 3 \\
+  3 & 65 ms & 4 \\
+\end{tabular}
+\label{tab:exposure}
+\caption{Exposure Times and Shutter Speeds Used In Our Experiments}
+\end{figure}
+

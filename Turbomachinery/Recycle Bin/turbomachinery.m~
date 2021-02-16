@@ -1,0 +1,538 @@
+%Turbomachinery
+
+clc
+clear all
+close all
+
+%Reading input file; if it doesnt work, change path
+filename='5HP_data_points.txt'
+
+fid = fopen(filename,'r');
+[line1,count] = fscanf(fid,'%s',[1,32]);
+col = 18; % number of columns
+[A,count] = fscanf(fid,'%g',[col,inf]); % reading parameters into Matrix A
+fclose(fid);
+
+A=A';
+
+% Post Processing
+% polar coordinates -> cartesian coordiantes
+Theta=10-reshape(A(:,3),16,[]);
+Theta=pi*Theta./180; % Grad -> Radiant
+radius=300.5-reshape(A(:,4),16,[]);
+[x,y]=pol2cart(Theta,radius);
+
+% Constants
+kappa=1.4;
+R=287; %specific cas constant of air
+T_S=22+273.15;
+
+
+
+% Figures
+% 2D plot Ptot
+f1 = figure(1);
+set(f1, 'Position', [0 0 1700 400])
+subplot(1,2,1)
+Ptot=reshape(A(:,8),16,[]);
+contourf(y,x,Ptot, 30)
+shading flat
+colorbar
+axis off
+text(-60,277,'1')
+text(-55,183+23.5*3,'0.75')
+text(-50,183+23.5*2,'0.50')
+text(-45,183+23.5,'0.25') % (277-183)*25%/100=23.5
+text(-40,183,'0')
+text(-32,181,'-0.5','HorizontalAlignment','center')
+text(-32/2,183,'-0.25','HorizontalAlignment','center')
+text(0,185,'0','HorizontalAlignment','center')
+text(32/2,183,'0.25','HorizontalAlignment','center')
+text(32,181,'0.5','HorizontalAlignment','center')
+text(0,175,'Pitch [-]','HorizontalAlignment','center')
+text(-65,183+23.5*2,'Span [-]','Rotation',90,'HorizontalAlignment','center')
+title('P_{tot}')
+
+% 2D plot Pstat
+f2 = figure(2);
+set(f2, 'Position', [0 0 1700 400])
+subplot(1,2,1)
+Pstat=reshape(A(:,9),16,[]);
+contourf(y,x,Pstat, 30)
+shading flat
+colorbar
+axis off
+text(-60,277,'1')
+text(-55,183+23.5*3,'0.75')
+text(-50,183+23.5*2,'0.50')
+text(-45,183+23.5,'0.25') % (277-183)*25%/100=23.5
+text(-40,183,'0')
+text(-32,181,'-0.5','HorizontalAlignment','center')
+text(-32/2,183,'-0.25','HorizontalAlignment','center')
+text(0,185,'0','HorizontalAlignment','center')
+text(32/2,183,'0.25','HorizontalAlignment','center')
+text(32,181,'0.5','HorizontalAlignment','center')
+text(0,175,'Pitch [-]','HorizontalAlignment','center')
+text(-65,183+23.5*2,'Span [-]','Rotation',90,'HorizontalAlignment','center')
+title('P_{stat}')
+
+
+% 2D plot Mach Number
+f3 = figure(3);
+set(f3, 'Position', [0 0 1700 400])
+subplot(1,2,1)
+Mach=reshape(A(:,10),16,[]);
+contourf(y,x,Mach, 30)
+shading flat
+colorbar
+axis off
+text(-60,277,'1')
+text(-55,183+23.5*3,'0.75')
+text(-50,183+23.5*2,'0.50')
+text(-45,183+23.5,'0.25') % (277-183)*25%/100=23.5
+text(-40,183,'0')
+text(-32,181,'-0.5','HorizontalAlignment','center')
+text(-32/2,183,'-0.25','HorizontalAlignment','center')
+text(0,185,'0','HorizontalAlignment','center')
+text(32/2,183,'0.25','HorizontalAlignment','center')
+text(32,181,'0.5','HorizontalAlignment','center')
+text(0,175,'Pitch [-]','HorizontalAlignment','center')
+text(-65,183+23.5*2,'Span [-]','Rotation',90,'HorizontalAlignment','center')
+title('Mach Number')
+
+% 2D plot Yawangle
+f4 = figure(4);
+set(f4, 'Position', [0 0 1700 400])
+subplot(1,2,1)
+Yawangle=reshape(A(:,6),16,[]);
+Yawangle=2*pi/360.*Yawangle;
+contourf(y,x,Yawangle, 30)
+shading flat
+colorbar
+axis off
+text(-60,277,'1')
+text(-55,183+23.5*3,'0.75')
+text(-50,183+23.5*2,'0.50')
+text(-45,183+23.5,'0.25') % (277-183)*25%/100=23.5
+text(-40,183,'0')
+text(-32,181,'-0.5','HorizontalAlignment','center')
+text(-32/2,183,'-0.25','HorizontalAlignment','center')
+text(0,185,'0','HorizontalAlignment','center')
+text(32/2,183,'0.25','HorizontalAlignment','center')
+text(32,181,'0.5','HorizontalAlignment','center')
+text(0,175,'Pitch [-]','HorizontalAlignment','center')
+text(-65,183+23.5*2,'Span [-]','Rotation',90,'HorizontalAlignment','center')
+title('Yaw angle')
+
+% 2D plot Pitchangle
+f5 = figure(5);
+set(f5, 'Position', [0 0 1500 500])
+subplot(1,2,1)
+Pitchangle=reshape(A(:,7),16,[]);
+Pitchangle=2*pi/360.*Pitchangle;
+contourf(y,x,Pitchangle, 30)
+shading flat
+colorbar
+axis off
+text(-60,277,'1')
+text(-55,183+23.5*3,'0.75')
+text(-50,183+23.5*2,'0.50')
+text(-45,183+23.5,'0.25') % (277-183)*25%/100=23.5
+text(-40,183,'0')
+text(-32,181,'-0.5','HorizontalAlignment','center')
+text(-32/2,183,'-0.25','HorizontalAlignment','center')
+text(0,185,'0','HorizontalAlignment','center')
+text(32/2,183,'0.25','HorizontalAlignment','center')
+text(32,181,'0.5','HorizontalAlignment','center')
+text(0,175,'Pitch [-]','HorizontalAlignment','center')
+text(-65,183+23.5*2,'Span [-]','Rotation',90,'HorizontalAlignment','center')
+title('Pitchangle')
+
+% 2D plot v_x
+v_x=Mach.*sqrt(kappa*R*T_S)./sqrt(1.+tan(Pitchangle).^2.+tan(Yawangle).^2);
+f6 = figure(6);
+set(f6, 'Position', [0 0 1500 500])
+subplot(1,2,1)
+contourf(y,x,v_x, 10)
+shading flat
+colorbar
+axis off
+text(-60,277,'1')
+text(-55,183+23.5*3,'0.75')
+text(-50,183+23.5*2,'0.50')
+text(-45,183+23.5,'0.25') % (277-183)*25%/100=23.5
+text(-40,183,'0')
+text(-32,181,'-0.5','HorizontalAlignment','center')
+text(-32/2,183,'-0.25','HorizontalAlignment','center')
+text(0,185,'0','HorizontalAlignment','center')
+text(32/2,183,'0.25','HorizontalAlignment','center')
+text(32,181,'0.5','HorizontalAlignment','center')
+text(0,175,'Pitch [-]','HorizontalAlignment','center')
+text(-65,183+23.5*2,'Span [-]','Rotation',90,'HorizontalAlignment','center')
+title('v_x')
+
+% 2D plot Vr
+v_r=v_x.*tan(Pitchangle);
+f7 =figure(7);
+set(f7, 'Position', [0 0 1500 500])
+subplot(1,2,1)
+contourf(y,x,v_r, 10)
+shading flat
+colorbar
+axis off
+text(-60,277,'1')
+text(-55,183+23.5*3,'0.75')
+text(-50,183+23.5*2,'0.50')
+text(-45,183+23.5,'0.25') % (277-183)*25%/100=23.5
+text(-40,183,'0')
+text(-32,181,'-0.5','HorizontalAlignment','center')
+text(-32/2,183,'-0.25','HorizontalAlignment','center')
+text(0,185,'0','HorizontalAlignment','center')
+text(32/2,183,'0.25','HorizontalAlignment','center')
+text(32,181,'0.5','HorizontalAlignment','center')
+text(0,175,'Pitch [-]','HorizontalAlignment','center')
+text(-65,183+23.5*2,'Span [-]','Rotation',90,'HorizontalAlignment','center')
+title('Vr')
+
+% 2D plot Vtetha
+v_tetha=v_x.*tan(Yawangle);
+f8 = figure(8);
+set(f8, 'Position', [0 0 1500 500])
+subplot(1,2,1)
+contourf(y,x,v_tetha, 10)
+shading flat
+colorbar
+axis off
+text(-60,277,'1')
+text(-55,183+23.5*3,'0.75')
+text(-50,183+23.5*2,'0.50')
+text(-45,183+23.5,'0.25') % (277-183)*25%/100=23.5
+text(-40,183,'0')
+text(-32,181,'-0.5','HorizontalAlignment','center')
+text(-32/2,183,'-0.25','HorizontalAlignment','center')
+text(0,185,'0','HorizontalAlignment','center')
+text(32/2,183,'0.25','HorizontalAlignment','center')
+text(32,181,'0.5','HorizontalAlignment','center')
+text(0,175,'Pitch [-]','HorizontalAlignment','center')
+text(-65,183+23.5*2,'Span [-]','Rotation',90,'HorizontalAlignment','center')
+title('Vtheta')
+
+%2D Plot Vtot
+v_tot=sqrt(v_x.^2+v_tetha.^2+v_r.^2);
+f9 = figure(9);
+set(f9, 'Position', [0 0 1500 500])
+subplot(1,2,1)
+contourf(y,x,v_tot, 10)
+shading flat
+colorbar
+axis off
+text(-60,277,'1')
+text(-55,183+23.5*3,'0.75')
+text(-50,183+23.5*2,'0.50')
+text(-45,183+23.5,'0.25') % (277-183)*25%/100=23.5
+text(-40,183,'0')
+text(-32,181,'-0.5','HorizontalAlignment','center')
+text(-32/2,183,'-0.25','HorizontalAlignment','center')
+text(0,185,'0','HorizontalAlignment','center')
+text(32/2,183,'0.25','HorizontalAlignment','center')
+text(32,181,'0.5','HorizontalAlignment','center')
+text(0,175,'Pitch [-]','HorizontalAlignment','center')
+text(-65,183+23.5*2,'Span [-]','Rotation',90,'HorizontalAlignment','center')
+title('V_{tot}')
+
+
+%Mass averaging
+%v_n=v_x (bcs v_n velocity normal to the measuring plane)
+for i=1:20
+    for j=1:15
+        v_x_mean(j,i)=(v_x(j,i)+v_x(j,i+1)+v_x(j+1,i)+v_x(j+1,i+1))/4;
+    end
+end
+
+% density
+density_mean=Ptot./(R*T_S);
+
+dRi=5.5; %radial grid spacing
+radial_pos=radius(:,1)+dRi/2;
+
+% mass averaged Ptot
+for i=1:20
+    for j=1:15
+        Ptot_mean(j,i)=(Ptot(j,i)+Ptot(j,i+1)+Ptot(j+1,i)+Ptot(j+1,i+1))/4;
+    end
+end
+
+Ptot_sum=0;
+m_dot_cell_tot=0;
+
+for j=1:15
+    for i=1:20
+        dA=dRi*pi*1*(2*radius(j,i)+dRi)/360;
+        m_dot_cell=dA*density_mean(j,i)*v_x_mean(j,i);
+        Ptot_sum=Ptot_sum+Ptot_mean(j,i)*m_dot_cell;
+        m_dot_cell_tot=m_dot_cell_tot+m_dot_cell;
+end
+Ptot_mmean(j)=Ptot_sum;
+Ptot_mmean(j)=Ptot_mmean(j)/m_dot_cell_tot;
+end
+
+figure(1)
+subplot(1,2,2)
+plot(Ptot_mmean,radial_pos(2:16),'-o')
+title('Mass averaged Ptot')
+xlabel('Ptot [Pa]')
+ylabel('radial position [mm]')
+
+% mass averaged Pstat
+for i=1:20
+    for j=1:15
+        Pstat_mean(j,i)=(Pstat(j,i)+Pstat(j,i+1)+Pstat(j+1,i)+Pstat(j+1,i+1))/4;
+    end
+end
+Pstat_sum=0;
+m_dot_cell_tot=0;
+for j=1:15
+    for i=1:20
+        dA=dRi*pi*1*(2*radius(j,i)+dRi)/360;
+        m_dot_cell=dA*density_mean(j,i)*v_x_mean(j,i);
+        Pstat_sum=Pstat_sum+Pstat_mean(j,i)*m_dot_cell;
+        m_dot_cell_tot=m_dot_cell_tot+m_dot_cell;
+    end
+    Pstat_mmean(j)=Pstat_sum;
+    Pstat_mmean(j)=Pstat_mmean(j)/m_dot_cell_tot;
+end
+
+figure(2)
+subplot(1,2,2)
+plot(Pstat_mmean,radial_pos(2:16),'-o')
+title('Mass averaged Pstat')
+xlabel('Pstat [Pa]')
+ylabel('radial position [mm]')
+
+% mass averaged Mach
+for i=1:20
+    for j=1:15
+        Mach_mean(j,i)=(Mach(j,i)+Mach(j,i+1)+Mach(j+1,i)+Mach(j+1,i+1))/4;
+    end
+end
+Mach_sum=0;
+m_dot_cell_tot=0;
+for j=1:15
+    for i=1:20
+        dA=dRi*pi*1*(2*radius(j,i)+dRi)/360;
+        m_dot_cell=dA*density_mean(j,i)*v_x_mean(j,i);
+        Mach_sum=Mach_sum+Mach_mean(j,i)*m_dot_cell;
+        m_dot_cell_tot=m_dot_cell_tot+m_dot_cell;
+    end
+    Mach_mmean(j)=Mach_sum;
+    Mach_mmean(j)=Mach_mmean(j)/m_dot_cell_tot;
+end
+
+figure(3)
+subplot(1,2,2)
+plot(Mach_mmean,radial_pos(2:16),'-o')
+title('Mass averaged Mach')
+xlabel('Mach [-]')
+ylabel('radial position [mm]')
+
+% mass averaged Yawangle
+for i=1:20
+    for j=1:15
+        Yawangle_mean(j,i)=(Yawangle(j,i)+Yawangle(j,i+1)+Yawangle(j+1,i)+Yawangle(j+1,i+1))/4;
+    end
+end
+Yawangle_sum=0;
+m_dot_cell_tot=0;
+for j=1:15
+    for i=1:20
+        dA=dRi*pi*1*(2*radius(j,i)+dRi)/360;
+        m_dot_cell=dA*density_mean(j,i)*v_x_mean(j,i);
+        Yawangle_sum=Yawangle_sum+Yawangle_mean(j,i)*m_dot_cell;
+        m_dot_cell_tot=m_dot_cell_tot+m_dot_cell;
+    end
+    Yawangle_mmean(j)=Yawangle_sum;
+    Yawangle_mmean(j)=Yawangle_mmean(j)/m_dot_cell_tot;
+end
+
+figure(4)
+subplot(1,2,2)
+plot(Yawangle_mmean,radial_pos(2:16),'-o')
+title('Mass averaged Yawangle \gamma')
+xlabel('Yawangle [rad]')
+ylabel('radial position [mm]')
+
+% mass averaged Pitch angle
+for i=1:20
+    for j=1:15
+        Pitchangle_mean(j,i)=(Pitchangle(j,i)+Pitchangle(j,i+1)+Pitchangle(j+1,i)+Pitchangle(j+1,i+1))/4;
+    end
+end
+Pitchangle_sum=0;
+m_dot_cell_tot=0;
+for j=1:15
+    for i=1:20
+        dA=dRi*pi*1*(2*radius(j,i)+dRi)/360;
+        m_dot_cell=dA*density_mean(j,i)*v_x_mean(j,i);
+        Pitchangle_sum=Pitchangle_sum+Pitchangle_mean(j,i)*m_dot_cell;
+        m_dot_cell_tot=m_dot_cell_tot+m_dot_cell;
+    end
+    Pitchangle_mmean(j)=Pitchangle_sum;
+    Pitchangle_mmean(j)=Pitchangle_mmean(j)/m_dot_cell_tot;
+end
+
+figure(5)
+subplot(1,2,2)
+plot(Pitchangle_mmean,radial_pos(2:16),'-o')
+title('Mass averaged Pitch \phi')
+xlabel('Pitch [rad]')
+ylabel('radial position [mm]')
+
+
+% mass averaged v_x
+for i=1:20
+    for j=1:15
+        v_x_mean(j,i)=(v_x(j,i)+v_x(j,i+1)+v_x(j+1,i)+v_x(j+1,i+1))/4;
+    end
+end
+v_x_sum=0;
+m_dot_cell_tot=0;
+for j=1:15
+    for i=1:20
+        dA=dRi*pi*1*(2*radius(j,i)+dRi)/360;
+        m_dot_cell=dA*density_mean(j,i)*v_x_mean(j,i);
+        v_x_sum=v_x_sum+v_x_mean(j,i)*m_dot_cell;
+        m_dot_cell_tot=m_dot_cell_tot+m_dot_cell;
+    end
+    v_x_mmean(j)=v_x_sum;
+    v_x_mmean(j)=v_x_mmean(j)/m_dot_cell_tot;
+end
+
+figure(6)
+subplot(1,2,2)
+plot(v_x_mmean,radial_pos(2:16),'-o')
+title('Mass averaged v_x')
+xlabel('v_x [m/s]')
+ylabel('radial position [mm]')
+
+% mass averaged v_r
+for i=1:20
+    for j=1:15
+        v_r_mean(j,i)=(v_r(j,i)+v_r(j,i+1)+v_r(j+1,i)+v_r(j+1,i+1))/4;
+    end
+end
+v_r_sum=0;
+m_dot_cell_tot=0;
+for j=1:15
+    for i=1:20
+        dA=dRi*pi*1*(2*radius(j,i)+dRi)/360;
+        m_dot_cell=dA*density_mean(j,i)*v_x_mean(j,i);
+        v_r_sum=v_r_sum+v_r_mean(j,i)*m_dot_cell;
+        m_dot_cell_tot=m_dot_cell_tot+m_dot_cell;
+    end
+    v_r_mmean(j)=v_r_sum;
+    v_r_mmean(j)=v_r_mmean(j)/m_dot_cell_tot;
+end
+
+figure(7)
+subplot(1,2,2)
+plot(v_r_mmean,radial_pos(2:16),'-o')
+title('Mass averaged v_r')
+xlabel('v_r [m/s]')
+ylabel('radial position [mm]')
+
+% V_tetha
+for i=1:20
+    for j=1:15
+        v_tetha_mean(j,i)=(v_tetha(j,i)+v_tetha(j,i+1)+v_tetha(j+1,i)+v_tetha(j+1,i+1))/4;
+    end
+end
+v_tetha_sum=0;
+m_dot_cell_tot=0;
+for j=1:15
+    for i=1:20
+        dA=dRi*pi*1*(2*radius(j,i)+dRi)/360;
+        m_dot_cell=dA*density_mean(j,i)*v_x_mean(j,i);
+        v_tetha_sum=v_tetha_sum+v_tetha_mean(j,i)*m_dot_cell;
+        m_dot_cell_tot=m_dot_cell_tot+m_dot_cell;
+    end
+    v_tetha_mmean(j)=v_tetha_sum;
+    v_tetha_mmean(j)=v_tetha_mmean(j)/m_dot_cell_tot;
+end
+
+figure(8)
+subplot(1,2,2)
+plot(v_tetha_mmean,radial_pos(2:16),'-o')
+title('Mass averaged v_{\theta}')
+xlabel('v_{tetha} [rad/s]')
+ylabel('radial position [mm]')
+
+% v_tot
+for i=1:20
+    for j=1:15
+        v_tot_mean(j,i)=(v_tot(j,i)+v_tot(j,i+1)+v_tot(j+1,i)+v_tot(j+1,i+1))/4;
+    end
+end
+v_tot_sum=0;
+m_dot_cell_tot=0;
+for j=1:15
+    for i=1:20
+        dA=dRi*pi*1*(2*radius(j,i)+dRi)/360;
+        m_dot_cell=dA*density_mean(j,i)*v_x_mean(j,i);
+        v_tot_sum=v_tot_sum+v_tot_mean(j,i)*m_dot_cell;
+        m_dot_cell_tot=m_dot_cell_tot+m_dot_cell;
+    end
+    v_tot_mmean(j)=v_tot_sum;
+    v_tot_mmean(j)=v_tot_mmean(j)/m_dot_cell_tot;
+end
+
+figure(9)
+subplot(1,2,2)
+plot(v_tot_mmean,radial_pos(2:16),'-o')
+title('Mass averaged v_{tot}')
+xlabel('v_{tot} [m/s]')
+ylabel('radial position [mm]')
+
+
+
+
+format long
+%Matrix with all data
+
+
+span = 100*(radial_pos(2:16) - 183)/94; %span in porcentage
+MEAN_DATA = [span radial_pos(2:16) Ptot_mmean' Pstat_mmean' Mach_mmean' Yawangle_mmean' Pitchangle_mmean' v_x_mmean' v_r_mmean' v_tetha_mmean'];
+
+
+   SPAN_DATA(1,1) = 90;
+   SPAN_DATA(2,1) = 70;
+   SPAN_DATA(3,1) = 50;
+   SPAN_DATA(4,1) = 30;
+   SPAN_DATA(5,1) = 10;
+
+for i = 2:10
+   
+
+   
+    SPAN_DATA(1,i) = MEAN_DATA(2,i) + (MEAN_DATA(1,i)-MEAN_DATA(2,i))*(90-MEAN_DATA(2,1))/(MEAN_DATA(1,1)-MEAN_DATA(2,1));
+    SPAN_DATA(2,i) = MEAN_DATA(5,i) + (MEAN_DATA(4,i)-MEAN_DATA(5,i))*(70-MEAN_DATA(5,1))/(MEAN_DATA(4,1)-MEAN_DATA(5,1));
+    SPAN_DATA(3,i) = MEAN_DATA(8,i) + (MEAN_DATA(7,i)-MEAN_DATA(8,i))*(50-MEAN_DATA(8,1))/(MEAN_DATA(7,1)-MEAN_DATA(8,1));
+    SPAN_DATA(4,i) = MEAN_DATA(12,i) + (MEAN_DATA(11,i)-MEAN_DATA(12,i))*(30-MEAN_DATA(12,1))/(MEAN_DATA(11,1)-MEAN_DATA(12,1));
+    SPAN_DATA(5,i) = MEAN_DATA(15,i) + (MEAN_DATA(14,i)-MEAN_DATA(15,i))*(10-MEAN_DATA(15,1))/(MEAN_DATA(14,1)-MEAN_DATA(15,1));
+
+   
+   
+end
+
+
+SPAN_DATA
+
+
+%Blade angles
+%Rotor velocity
+N=5000; %Rounds per Minute
+U=2*pi*N/60.*SPAN_DATA(:,2)*10^(-3);
+
+%C3
+
+
+

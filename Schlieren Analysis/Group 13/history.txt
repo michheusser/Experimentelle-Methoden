@@ -1,0 +1,50 @@
+cd Group' 13'\
+a=imread('Referenz.tif');
+imshow(a,[]);
+b=imread('225.tif');
+imshow(b,[]);
+imshow(abs(a-b),[]);
+[bs,rect]=imcrop(b);
+as=imcrop(a,rect);
+ac=normxcorr2(as,a);
+imshow(ac,[]);
+cc=normxcorr2(bs,a);
+imshow(cc,[]);
+rgb(:,:,1)= ac;
+rgb(:,:,2)= cc;
+rgb(:,:,3)= 0;
+imshow (rgb)
+c=imread('125.tif');
+cs=imcrop(c,rect);
+cc1=normxcorr2(cs,a);
+rgb(:,:,3)= cc1;
+imshow (rgb)
+[maxva;,maxind]=max(cc(:))
+[maxval,maxind]=max(cc(:))
+[rows,cols]=ind2sub(size(cc),maxind)
+[maxva;,maxind]=max(ac(:))
+[maxval,maxind]=max(ac(:))
+[rows,cols]=ind2sub(size(cc),maxind)
+clear all
+ref=imread('Referenz_p.tif');
+[rs,rect]=imcrop(ref)
+f=imread('175_p.tif');
+fs=imcrop(f,rect);
+imshow(abs(fs-rs),[]);
+[x,y,u,v,q,vld]=SimplePIV (rs,fs,[32,32],[8,8],[16,16]);
+[x,y,u,v,q,vld]=SimplePIV (rs,fs,32,8,16);
+quiver(x,y,u,v)
+quiver(x,y,u,v,5
+quiver(x,y,u,v,5)
+figure
+surf(q)
+[x,y,u,v,q,vld]=SimplePIV (rs,fs,48,16);
+[x,y,u,v,q,vld]=SimplePIV (rs,fs,48,8,16);
+quiver(x,y,u,v,5)
+n=IntegrateDisplacements (-u,-v,NaN(39,1),1.47*ones(39,1),NaN(1,32),NaN(1,32));
+figure
+surf(n)
+view(0,270)
+quiver(x,y,u,v,5)
+n=IntegrateDisplacements (-u(15:end,2:end),-v(15:end,2:end),NaN(25,1),1.47*ones(25,1),NaN(1,31),NaN(1,31));
+surf(n)

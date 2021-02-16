@@ -1,0 +1,45 @@
+%!TEX root = Report.tex
+\chapter{Berechnungsmethode}\label{sec:methodofattack}
+
+Um die Gastemperatur aus den gemessenen Temperaturen zu brechnen, betrachten wir die Spitze des geschützen Thermoelementes ($T_2$) und wenden die Energieerhalung an (siehe Gleichung \ref{eq:energyconservation}). Dabei gibt es drei Arten von Wärmeübertragung: Konvektion vom Gas zum Thermoelement, Wärmestrahlung von der Innenwand des Schirmes zum Thermoelement und Wärmeleitung im Thermoelement selbst. Die Energieerhaltung ist also:\\
+
+\begin{equation}
+\dot Q_{conv}+ \dot Q_{rad}+ \dot Q_{cond}=0
+\label{eq:energyconservation}
+\end{equation}\\
+
+Der konvektive Anteil $\dot Q_{conv}$ ist mit der folgenden Gleichung \ref{eq:qconv} zu berechnen:\\
+
+\begin{equation}
+\dot Q_{conv}=A_{tc} \overline h (T_{gas}-T_2)
+\label{eq:qconv}
+\end{equation}\\
+
+Dabi ist $A_{tc}$ die Fläche des Thermoelemenstes, welche dem Gas ausgesetzt ist und $\overline h$ der gemittelte Wärmeübertragungskoeffizient. Der Wärmeübertragungskoeffizient kann ermittelt werden, da die Strömungsbedingungen bekannt sind und Korrekturfaktoren aus Kalibrierungsversuchen ermittelt wurden.\\
+
+Die Wärmestrahlung $\dot Q_{rad}$ ist durch die Gleichung \ref{eq:qrad} gegeben.
+
+\begin{equation}
+\dot Q_{rad}=\frac{A_{tc} \sigma (T_{sh}^4-T_{2}^4 )}{\frac{1}{\epsilon_{tc}}+\frac {D_{tc}}{D_{sc}} (\frac{1}{\epsilon_{sh}}-1) }
+\label{eq:qrad}
+\end{equation}\\
+
+Dabei ist $T_{sh}=\frac{T_3+T_4}{2}$ die gemittelte Temperatur des Schirmes, $\sigma$ die Stefan-Boltzmann Konstante, $\epsilon_{tc}$ und $\epsilon_{sh}$ die Emissivitätskoeffizienten vom Thermoelement und vom Schirm und $D_{tc}$ und $D_{sh}$ die Durchmesser von Thermoelement und Schirm. \\
+
+Und schliesslich lässt sich die Wärmeleitung mit Gleichung \ref{eq:qcond} berechnen.
+
+\begin{equation}
+\dot Q_{cond}=k_{eff} A_{cond} \frac{T_{sh}-T_{2}}{L_{tc}}
+\label{eq:qcond}
+\end{equation}\\
+
+Mit der charaktersistischen Länge $L_{tc}$, der Querschnittsfläche des Thermoelementes $A_{cond}$ und $k_{eff}$ der tatsächlichen Wärmeleitfähigkeit, welche über eine empirische Relation und Kalibrierungsmessungen bestimmt wird.\\
+
+Schlussendlich kann man die Gastemperatur mit einer impliziten Gleichung lösen:
+
+\begin{equation}
+T_{gas}=T_{tc}-\frac{1}{A_{tc} \overline h} (\dot Q_{rad} + \dot Q_{cond}(T_{gas}))
+\label{eq:tgas}
+\end{equation}
+
+Die Berechnungen wurden mit einer bereitgestellten Excel-Datei gemacht, welche iterativ die Temperaturen ermittelt. Hierbei war vor allem auf die Umrechnung von Kelvin zu Grad Celsius zu achten um korrekte Resultate zu erhalten.
